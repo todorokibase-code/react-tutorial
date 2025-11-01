@@ -1,0 +1,24 @@
+export default function TodoList() {
+  const person = {
+    name: "Gregorio.Y.Zara",
+    thema: {
+      backgroundColor: "black",
+      color: "pink",
+    },
+  };
+  return (
+    <div style={person.thema}>
+      <h1>{person.name}'s Todos</h1>
+      <img
+        className="avatar"
+        src="https://i.imgur.com/7vQD0fPs.jpg"
+        alt="Gregorio Y. Zara"
+      />
+      <ul>
+        <li>Improve the videophone</li>
+        <li>Prepare aeronautics lectures</li>
+        <li>Work on the alcohol-fuelled engine</li>
+      </ul>
+    </div>
+  );
+}

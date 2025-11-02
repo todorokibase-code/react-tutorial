@@ -1,0 +1,1 @@
+import{r as e,j as r,c as t}from"./client-S2IX6kIp.js";var n=e();function o(){return r.jsx(r.Fragment,{children:r.jsx("div",{children:r.jsx("h1",{children:"App tutorial"})})})}t.createRoot(document.getElementById("root")).render(r.jsx(n.StrictMode,{children:r.jsx(o,{})}));

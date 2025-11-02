@@ -1,4 +1,7 @@
-import "./App.css";
+import ReactDOM from "react-dom/client";
+
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import FilterableProductTable from "./pages/FilterableProductTable";
 const PRODUCT = [
   { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
@@ -8,15 +11,8 @@ const PRODUCT = [
   { category: "Vegetables", price: "$4", stocked: false, name: "Pumpkin" },
   { category: "Vegetables", price: "$1", stocked: true, name: "Peas" }
 ]
-function App() {
-  return (
-    <>
-      <div>
-        <nav>
-          <a href="./filterableproducttable.html">Reacの流儀</a>
-        </nav>
-      </div>
-    </>
-  );
-}
-export default App;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <FilterableProductTable products={PRODUCT} />
+  </StrictMode>
+);

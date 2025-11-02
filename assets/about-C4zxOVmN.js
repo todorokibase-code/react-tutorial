@@ -1,1 +1,0 @@
-import{j as e,R as t}from"./client-S2IX6kIp.js";function n(){return e.jsxs("div",{children:[e.jsx("h1",{children:"About Page"}),e.jsxs("nav",{children:[e.jsx("a",{href:"./index.html",children:"Home"})," |"," ",e.jsx("a",{href:"./contact.html",children:"Contact"})]})]})}t.createRoot(document.getElementById("root")).render(e.jsx(n,{}));

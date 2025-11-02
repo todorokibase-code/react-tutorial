@@ -1,1 +1,0 @@
-import{j as e,R as r}from"./client-S2IX6kIp.js";import{r as t}from"./index-Braq4HzL.js";function o(){return e.jsx("h1",{children:"FilterableProductTable"})}r.createRoot(document.getElementById("root")).render(e.jsx(t.StrictMode,{children:e.jsx(o,{})}));

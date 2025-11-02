@@ -1,0 +1,1 @@
+import{j as r,c as e}from"./client-S2IX6kIp.js";import{r as t}from"./index-Braq4HzL.js";function n(){return r.jsx(r.Fragment,{children:r.jsx("div",{children:r.jsx("nav",{children:r.jsx("a",{href:"./filterableproducttable.html",children:"Reacの流儀"})})})})}e.createRoot(document.getElementById("root")).render(r.jsx(t.StrictMode,{children:r.jsx(n,{})}));

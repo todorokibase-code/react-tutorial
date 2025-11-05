@@ -23,12 +23,19 @@ function ProductRow({ product }) {
         </tr>
     )
 }
-function ProductTable({ products }) {
+function ProductTable({ products, filterText, inStockOnly }) {
     const rows = [];
     let lastCategory = null;
     let cnt = 0;
 
     products.forEach((product) => {
+        if (product.name.toLowerCase().indexOf(filterText.toLowerCase())
+            === -1) {
+            return;
+        }
+        if (inStockOnly && !product.stocked) {
+            return;
+        }
         if (product.category !== lastCategory) {
             rows.push(
                 <ProductCategoryRow category={product.category}
@@ -58,13 +65,13 @@ function ProductTable({ products }) {
     )
 
 }
-function SearchBar() {
+function SearchBar({ filterText, inStockOnly, onFilterTextChange, onInputOnlyStockChange }) {
     return (
         <form action="">
-            <input type="text" placeholder="Searc..." />
+            <input type="text" value={filterText} onChange={(e) => onFilterTextChange(e.target.value)} placeholder="Searc..." />
             <label >
 
-                <input type="checkbox" />
+                <input type="checkbox" checked={inStockOnly} onChange={(e) => onInputOnlyStockChange(e.target.checked)} />
                 Only show products in stock
             </label>
         </form>
@@ -72,13 +79,18 @@ function SearchBar() {
 }
 
 function FilterableProductTable({ products }) {
+    const [filterText, setFilterText] = useState('');
+    const [inStockOnly, setInStockOnly] = useState(false);
+
     return (
         <div>
             <nav>
                 <a href="./index.html">TOP</a>
             </nav>
-            <SearchBar />
-            <ProductTable products={products} />
+            <SearchBar filterText={filterText} inStockOnly={inStockOnly}
+                onFilterTextChange={setFilterText}
+                onInputOnlyStockChange={setInStockOnly} />
+            <ProductTable products={products} filterText={filterText} inStockOnly={inStockOnly} />
         </div>
     )
 }

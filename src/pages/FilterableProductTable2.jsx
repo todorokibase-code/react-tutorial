@@ -9,18 +9,13 @@ const PRODUCT = [
     { category: "Vegetables", price: "$1", stocked: true, name: "Peas" }
 ]
 // #region テーブルの行
-function ProductRow({ name, price, stocked }) {
-    let row = ''
-    if (stocked) {
-        row = (<><td>{name}</td><td>{price}</td></>)
-    } else {
-        row = (<><td style={{ color: 'red' }}>{name}</td > <td>{price}</td></>)
-
-    }
-
+function ProductRow({ product }) {
+    const name = product.stocked ? product.name :
+        <span style={{ color: 'red' }}>{product.name}</span>
     return (
         <tr>
-            {row}
+            <td>{name}</td>
+            <td>{product.price}</td>
         </tr>
     )
 }
@@ -54,7 +49,7 @@ function ProductTable({ products, inStockOnly, searchText }) {
 
         }
 
-        rows.push(<ProductRow name={r.name} price={r.price} stocked={r.stocked} />)
+        rows.push(<ProductRow product={r} />)
 
         category = r.category;
 

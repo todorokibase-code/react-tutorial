@@ -72,14 +72,14 @@ function ProductTable({ products, inStockOnly, searchText }) {
 // #endregion
 
 // #region サーチバー
-function SearchBar({ searchText, inStockOnly, setSearchText, setInStockOnly }) {
+function SearchBar({ filterText, inStockOnly, onFilterTextChange, onInStockOnlyChange }) {
 
     return (
         <>
             <form>
-                <input type="text" value={searchText} onChange={(e) => { setSearchText(e.target.value) }} placeholder="Search..." />
+                <input type="text" value={filterText} onChange={(e) => { onFilterTextChange(e.target.value) }} placeholder="Search..." />
                 <label>
-                    <input type="checkbox" checked={inStockOnly} onChange={(e) => { setInStockOnly(e.target.checked) }} />
+                    <input type="checkbox" checked={inStockOnly} onChange={(e) => { onInStockOnlyChange(e.target.checked) }} />
                     {' '}
                     Only show products in stock
 

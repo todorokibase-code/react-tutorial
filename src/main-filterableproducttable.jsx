@@ -15,6 +15,6 @@ const PRODUCT = [
 ReactDOM.createRoot(document.getElementById("root")).render(
   <StrictMode>
     <FilterableProductTable products={PRODUCT} />
-    <FilterableProductTable2 />
+    <FilterableProductTable2 products={PRODUCT} />
   </StrictMode>
 );

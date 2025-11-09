@@ -11,7 +11,9 @@ const PRODUCT = [
 // #region テーブルの行
 function ProductRow({ product }) {
     const name = product.stocked ? product.name :
-        <span style={{ color: 'red' }}>{product.name}</span>
+        (<>
+            <span style={{ color: 'red' }}>{product.name}</span>
+        </>)
     return (
         <tr>
             <td>{name}</td>
@@ -34,24 +36,24 @@ function ProductCategoryRow({ category }) {
 
 // #region プロダクトテーブル
 function ProductTable({ products, inStockOnly, searchText }) {
-    let category = ''
-    let rows = []
+    let lastCategory = null;
+    const rows = []
 
-    products.map(r => {
+    products.forEach(r => {
         if (r.name.toLowerCase().indexOf(searchText.toLowerCase()) === -1) {
             return;
         }
         if (inStockOnly && !r.stocked) {
             return;
         }
-        if (category !== r.category) {
-            rows.push(<ProductCategoryRow category={r.category} />);
+        if (lastCategory !== r.category) {
+            rows.push(<ProductCategoryRow category={r.category} key={r.category} />);
 
         }
 
         rows.push(<ProductRow product={r} />)
 
-        category = r.category;
+        lastCategory = r.category;
 
     })
 
@@ -59,8 +61,10 @@ function ProductTable({ products, inStockOnly, searchText }) {
         <>
             <table>
                 <thead>
-                    <th>Name</th>
-                    <th>Price</th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {rows}

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import FilterableProductTable from "./pages/FilterableProductTable";
+import FilterableProductTable2 from "./pages/FilterableProductTable2";
 const PRODUCT = [
   { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
   { category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit" },
@@ -14,5 +15,6 @@ const PRODUCT = [
 ReactDOM.createRoot(document.getElementById("root")).render(
   <StrictMode>
     <FilterableProductTable products={PRODUCT} />
+    <FilterableProductTable2 />
   </StrictMode>
 );

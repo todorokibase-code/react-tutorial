@@ -93,7 +93,8 @@ function FilterableProductTable2({ products }) {
     const [inStockOnly, setInStockOnly] = useState(false);
     return (
         <div>
-            <h1>テーブル２</h1>
+            <h3>サンプルコードを見ずに自分でもう一度やってみる</h3>
+
             <SearchBar filterText={filterText} inStockOnly={inStockOnly} onFilterTextChange={setFilterText} onInStockOnlyChange={setInStockOnly}></SearchBar>
             <ProductTable products={products} inStockOnly={inStockOnly} filterText={filterText} />
         </div>

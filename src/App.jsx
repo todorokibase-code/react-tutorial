@@ -13,7 +13,8 @@ function App() {
     <>
       <div>
         <nav>
-          <a href="./filterableproducttable.html">技術領域①　Reacの流儀　１回目</a>
+          <a href="./filterableproducttable.html">技術領域①　Reacの流儀</a>
+          <a href="./player_profile_card.html">技術領域①　Reacの流儀 オリジナルページ作成</a>
         </nav>
       </div>
     </>

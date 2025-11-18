@@ -3,7 +3,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import shintaro from "../../public/image/player_image_001.jpg"
 import moruten from "../../public/image/player_image_002.jpg"
-
+import './style.css'
 // #region PlayerImageコンポーネント
 // プレイヤー画像
 const PlayerImage = ({ player }) => {
@@ -26,8 +26,75 @@ const StatsScore = () => {
 // #endregion
 
 // #region RadarChartコンポーネント
-const RadarChart = () => {
+const RadarChart = ({ stats }) => {
+    const { Impact, Structure, Insight, Logic, Originality, Instinct } = stats;
+    const radarImpactNum = `100.0 ${100 - Impact}`;
+    const radarStructure = "50% " + (50 - (Structure / 2) + "%");
+    const radarOriginality = "50%" + (50 + (Originality / 2) + "%");
 
+    return (
+        /**class radar-chart-3にpadding 35px指定してある。 */
+        <div className="radar-chart-3" >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" >
+
+                <g stroke="#dce5eb">
+                    <path d="M 100 100 L 100.0 0.0" />
+                    <path d="M 100 100 L 186.6 50.0" />
+                    <path d="M 100 100 L 186.6 150.0" />
+                    <path d="M 100 100 L 100.0 200.0" />
+                    <path d="M 100 100 L 13.4 150.0" />
+                    <path d="M 100 100 L 13.4 50.0" />
+                </g>
+                {/**　内側の枠線*/}
+                <g stroke="#dce5eb" fill="none">
+                    <path d="M 100.0 0.0 L 186.6 50.0 L 186.6 150.0 L 100.0 200.0 L 13.4 150.0 L 13.4 50.0 L 100.0 0.0" />
+                    <path d="M 100.0 16.7 L 172.2 58.3 L 172.2 141.7 L 100.0 183.3 L 27.8 141.7 L 27.8 58.3 L 100.0 16.7" />
+                    <path d="M 100.0 33.3 L 157.7 66.7 L 157.7 133.3 L 100.0 166.7 L 42.3 133.3 L 42.3 66.7 L 100.0 33.3" />
+                    <path d="M 100.0 50.0 L 143.3 75.0 L 143.3 125.0 L 100.0 150.0 L 56.7 125.0 L 56.7 75.0 L 100.0 50.0" />
+                    <path d="M 100.0 66.7 L 128.9 83.3 L 128.9 116.7 L 100.0 133.3 L 71.1 116.7 L 71.1 83.3 L 100.0 66.7" />
+                    <path d="M 100.0 83.3 L 114.4 91.7 L 114.4 108.3 L 100.0 116.7 L 85.6 108.3 L 85.6 91.7 L 100.0 83.3" />
+                </g>
+                {/**レーダーチャート 本体　fill 塗りつぶし色　最後の２桁が透明度　stroke 枠線色 　（x, y）*/}
+                <path d="M 100.0 20.0 L 186.6 50.0 L 160.6 135.0 L 100.0 170.0 L 39.4 135.0 L 13.4 50.0 L 100.0 20.0" fill="#1bd5ee4e" stroke="#1bd5ee" />
+                {/**頂点 描画 */}
+                <g fill="#2589d0">
+                    <circle cx="100.0" cy="20.0" r="3" />
+                    <circle cx="186.6" cy="50.0" r="3" />
+                    <circle cx="160.6" cy="135.0" r="3" />
+                    <circle cx="100.0" cy="170.0" r="3" />
+                    <circle cx="39.4" cy="135.0" r="3" />
+                    <circle cx="13.4" cy="50.0" r="3" />
+                </g>
+            </svg>
+            <dl>
+                <div>
+                    <dt>議論力</dt>
+                    <dd>8.0</dd>
+                </div>
+                <div>
+                    <dt>盤面整理力</dt>
+                    <dd>10.0</dd>
+                </div>
+                <div>
+                    <dt>洞察力</dt>
+                    <dd>7.0</dd>
+                </div>
+                <div>
+                    <dt>論理的思考能力</dt>
+                    <dd>7.0</dd>
+                </div>
+                <div>
+                    <dt>オリジナル性</dt>
+                    <dd>7.0</dd>
+                </div>
+                <div>
+                    <dt>直感力</dt>
+                    <dd>10.0</dd>
+                </div>
+            </dl>
+        </div>
+
+    )
 }
 // #endregion
 
@@ -83,17 +150,18 @@ const PlayerProfileCard = () => {
             introduction: introduction
         },
         stats: {
-            Impact: "",
-            Structure: "",
-            Insight: "",
-            Logic: "",
-            Originality: "",
-            Instinct: "",
+            Impact: 50,
+            Structure: 100,
+            Insight: "0",
+            Logic: "96",
+            Originality: 100,
+            Instinct: "100",
         }
     }
     return (<div>
 
         <PlayerImage player={player} />
+        <RadarChart stats={player.stats} />
         <div style={{ display: "flex" }}>
             <BasicInformation player={player} />
             <DetailInformation player={player} />

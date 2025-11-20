@@ -1,3 +1,18 @@
+/* 罫線を引く要素を指定 */
+table,
+th,
+td {
+    border: 1px solid #333;
+    /* 線の太さ、種類、色 */
+}
+
+/* 罫線を一重線にするために必須 */
+table {
+    border-collapse: collapse;
+
+    /* 必要に応じて幅を設定 */
+}
+
 .triangle {
     width: 400x;
     height: 400px;
@@ -31,7 +46,7 @@
     position: relative;
     width: 230px;
     height: 230px;
-    margin: 0 auto;
+    margin: 0 35px;
     padding: 35px;
     box-sizing: content-box;
 }

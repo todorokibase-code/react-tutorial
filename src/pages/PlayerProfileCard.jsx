@@ -19,24 +19,64 @@ const PlayerImage = ({ player }) => {
     )
 }
 // #endregion
-// #region StatsScoreコンポーネント
-const StatsScore = () => {
+const StatsBoard = () => {
 
 }
-// #endregion
-
+const StatsScore = ({ stats }) => {
+    return (
+        <table>
+            <tbody>
+                <tr>
+                    <th>議論力</th>
+                    <td>{stats.Impact}</td>
+                </tr>
+                <tr>
+                    <th>盤面整理力</th>
+                    <td>{stats.Structure}</td>
+                </tr>
+                <tr>
+                    <th>洞察力</th>
+                    <td>{stats.Insight}</td>
+                </tr>
+                <tr>
+                    <th>論理的思考能力</th>
+                    <td>{stats.Logic}</td>
+                </tr>
+                <tr>
+                    <th>オリジナル性</th>
+                    <td>{stats.Originality}</td>
+                </tr>
+                <tr>
+                    <th>直感力</th>
+                    <td>{stats.Instinct}</td>
+                </tr>
+            </tbody>
+        </table>
+    )
+}
 // #region RadarChartコンポーネント
 const RadarChart = ({ stats }) => {
     const { Impact, Structure, Insight, Logic, Originality, Instinct } = stats;
-    const radarImpactNum = `100.0 ${100 - Impact}`;
-    const radarStructure = "50% " + (50 - (Structure / 2) + "%");
-    const radarOriginality = "50%" + (50 + (Originality / 2) + "%");
 
+    // 各項目の頂点の座標を求める
+    const ImpactCoordinate = { x: 100, y: (100 - Impact) }; // 真上の頂点
+    const StructureCoordinate = { x: (100 + (Structure * (Math.sqrt(3) / 2))), y: 100 - (Structure / 2) } // 右上の頂点
+    const InsightCoordinate = { x: (100 + (Insight * (Math.sqrt(3) / 2))), y: 100 + (Insight / 2) } // 右下の頂点
+    const LogicCoordinate = { x: 100, y: (100 + Logic) }; // 真下の頂点
+    const OriginalityCoordinate = { x: (100 - (Originality * (Math.sqrt(3) / 2))), y: 100 + (Originality / 2) } // 左下の頂点
+    const InstinctCoordinate = { x: (100 - (Instinct * (Math.sqrt(3) / 2))), y: 100 - (Instinct / 2) } // 左上の頂点
+
+    // "M 100.0 20.0 L 186.6 50.0 L 160.6 135.0 L 100.0 170.0 L 39.4 135.0 L 13.4 50.0 L 100.0 20.0"
+    let radarPath = `M ${ImpactCoordinate['x']} ${ImpactCoordinate['y']} L ${StructureCoordinate['x']} ${StructureCoordinate['y']} L ${InsightCoordinate['x']} ${InsightCoordinate['y']} L ${InsightCoordinate['x']} ${InsightCoordinate['y']} `;
+    radarPath = radarPath + `L ${LogicCoordinate['x']} ${LogicCoordinate['y']} L ${OriginalityCoordinate['x']} ${OriginalityCoordinate['y']} L ${InstinctCoordinate['x']} ${InstinctCoordinate['y']} `;
+    radarPath = radarPath + `L ${ImpactCoordinate['x']} ${ImpactCoordinate['y']}`
+    console.log(radarPath)
     return (
         /**class radar-chart-3にpadding 35px指定してある。 */
         <div className="radar-chart-3" >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" >
 
+                {/**中央から広がる直線 */}
                 <g stroke="#dce5eb">
                     <path d="M 100 100 L 100.0 0.0" />
                     <path d="M 100 100 L 186.6 50.0" />
@@ -55,41 +95,45 @@ const RadarChart = ({ stats }) => {
                     <path d="M 100.0 83.3 L 114.4 91.7 L 114.4 108.3 L 100.0 116.7 L 85.6 108.3 L 85.6 91.7 L 100.0 83.3" />
                 </g>
                 {/**レーダーチャート 本体　fill 塗りつぶし色　最後の２桁が透明度　stroke 枠線色 　（x, y）*/}
-                <path d="M 100.0 20.0 L 186.6 50.0 L 160.6 135.0 L 100.0 170.0 L 39.4 135.0 L 13.4 50.0 L 100.0 20.0" fill="#1bd5ee4e" stroke="#1bd5ee" />
+                <path d={radarPath}
+                    fill="#1bd5ee4e"
+                    stroke="#1bd5ee" />
+
                 {/**頂点 描画 */}
                 <g fill="#2589d0">
-                    <circle cx="100.0" cy="20.0" r="3" />
-                    <circle cx="186.6" cy="50.0" r="3" />
-                    <circle cx="160.6" cy="135.0" r="3" />
-                    <circle cx="100.0" cy="170.0" r="3" />
-                    <circle cx="39.4" cy="135.0" r="3" />
-                    <circle cx="13.4" cy="50.0" r="3" />
+                    <circle cx={ImpactCoordinate['x']} cy={ImpactCoordinate['y']} r="3" />
+                    <circle cx={StructureCoordinate['x']} cy={StructureCoordinate['y']} r="3" />
+                    <circle cx={InsightCoordinate['x']} cy={InsightCoordinate['y']} r="3" />
+                    <circle cx={LogicCoordinate['x']} cy={LogicCoordinate['y']} r="3" />
+                    <circle cx={OriginalityCoordinate['x']} cy={OriginalityCoordinate['y']} r="3" />
+                    <circle cx={InstinctCoordinate['x']} cy={InstinctCoordinate['y']} r="3" />
                 </g>
             </svg>
             <dl>
+
                 <div>
                     <dt>議論力</dt>
-                    <dd>8.0</dd>
+                    {/**  <dd>{Impact}</dd>*/}
                 </div>
                 <div>
                     <dt>盤面整理力</dt>
-                    <dd>10.0</dd>
+                    {/**<dd>{Structure}</dd>*/}
                 </div>
                 <div>
                     <dt>洞察力</dt>
-                    <dd>7.0</dd>
+                    {/**<dd>{Insight}</dd>*/}
                 </div>
                 <div>
                     <dt>論理的思考能力</dt>
-                    <dd>7.0</dd>
+                    {/**<dd>{Logic}</dd>*/}
                 </div>
                 <div>
                     <dt>オリジナル性</dt>
-                    <dd>7.0</dd>
+                    {/**<dd>{Originality}</dd>*/}
                 </div>
                 <div>
                     <dt>直感力</dt>
-                    <dd>10.0</dd>
+                    {/**<dd>{Instinct}</dd>*/}
                 </div>
             </dl>
         </div>
@@ -150,18 +194,33 @@ const PlayerProfileCard = () => {
             introduction: introduction
         },
         stats: {
-            Impact: 50,
+            Impact: 92,
             Structure: 100,
-            Insight: "0",
-            Logic: "96",
-            Originality: 100,
-            Instinct: "100",
+            Insight: 91,
+            Logic: 47,
+            Originality: 67,
+            Instinct: 86,
         }
     }
     return (<div>
 
-        <PlayerImage player={player} />
-        <RadarChart stats={player.stats} />
+        <div style={{
+            display: "flex",
+            //alignItems: "center" // 垂直方向の中央揃え
+        }}>
+            <PlayerImage player={player} />
+
+            {/* 2. StatsBoard をラップする div にスタイルを追加 */}
+            <div style={{
+                alignSelf: "flex-start", // 引き伸ばしを防止（上端に寄せる）
+                marginTop: "auto",      // 上下のマージンを auto にすることで中央に配置
+                marginBottom: "auto"    // 上下のマージンを auto にすることで中央に配置
+            }}>
+                <StatsScore stats={player.stats} />
+            </div>
+
+            <RadarChart stats={player.stats} />
+        </div>
         <div style={{ display: "flex" }}>
             <BasicInformation player={player} />
             <DetailInformation player={player} />

@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { StrictMode } from "react";
+import { useState } from 'react';
 import { createRoot } from "react-dom/client";
 import shintaro from "../../public/image/player_image_001.jpg"
 import moruten from "../../public/image/player_image_002.jpg"
@@ -22,33 +23,47 @@ const PlayerImage = ({ player }) => {
 const StatsBoard = () => {
 
 }
-const StatsScore = ({ stats }) => {
+const StatsScore = ({ player, onScoreTextChange }) => {
+    const handleChange = (e) => {
+
+        const newPlayer = { ...player };
+        const item = e.target.id;
+        newPlayer.stats[item] = e.target.value;
+        console.log('id: ', item)
+        onScoreTextChange(newPlayer)
+
+
+    }
     return (
+
         <table>
+            <caption>
+                ※数値を変更できます
+            </caption>
             <tbody>
                 <tr>
                     <th>議論力</th>
-                    <td>{stats.Impact}</td>
+                    <td><input id="Impact" type="text" value={player.stats.Impact} onChange={handleChange} /></td>
                 </tr>
                 <tr>
                     <th>盤面整理力</th>
-                    <td>{stats.Structure}</td>
+                    <td><input id="Structure" type="text" value={player.stats.Structure} onChange={handleChange} /></td>
                 </tr>
                 <tr>
                     <th>洞察力</th>
-                    <td>{stats.Insight}</td>
+                    <td><input id="Insight" type="text" value={player.stats.Insight} onChange={handleChange} /></td>
                 </tr>
                 <tr>
                     <th>論理的思考能力</th>
-                    <td>{stats.Logic}</td>
+                    <td><input id="Logic" type="text" value={player.stats.Logic} onChange={handleChange} /></td>
                 </tr>
                 <tr>
                     <th>オリジナル性</th>
-                    <td>{stats.Originality}</td>
+                    <td><input id="Originality" type="text" value={player.stats.Originality} onChange={handleChange} /></td>
                 </tr>
                 <tr>
                     <th>直感力</th>
-                    <td>{stats.Instinct}</td>
+                    <td><input id="Instinct" type="text" value={player.stats.Instinct} onChange={handleChange} /></td>
                 </tr>
             </tbody>
         </table>
@@ -62,7 +77,8 @@ const RadarChart = ({ stats }) => {
     const ImpactCoordinate = { x: 100, y: (100 - Impact) }; // 真上の頂点
     const StructureCoordinate = { x: (100 + (Structure * (Math.sqrt(3) / 2))), y: 100 - (Structure / 2) } // 右上の頂点
     const InsightCoordinate = { x: (100 + (Insight * (Math.sqrt(3) / 2))), y: 100 + (Insight / 2) } // 右下の頂点
-    const LogicCoordinate = { x: 100, y: (100 + Logic) }; // 真下の頂点
+    const LogicCoordinate = { x: 100, y: (100 + Number(Logic)) }; // 真下の頂点
+    console.log("LogicCoordinate :", LogicCoordinate)
     const OriginalityCoordinate = { x: (100 - (Originality * (Math.sqrt(3) / 2))), y: 100 + (Originality / 2) } // 左下の頂点
     const InstinctCoordinate = { x: (100 - (Instinct * (Math.sqrt(3) / 2))), y: 100 - (Instinct / 2) } // 左上の頂点
 
@@ -173,9 +189,7 @@ const BasicInformation = ({ player }) => {
 const DetailInformation = ({ player }) => {
     return (
         <div>
-            <p>
-                {player.profile.introduction}
-            </p>
+            {player.profile.introduction}
         </div>
     )
 }
@@ -186,7 +200,7 @@ const PlayerProfileCard = () => {
     // 詳細説明
     const introduction = <p>その爽やかな語り口と裏腹に鋭い情報分析力と論理的な厳格さを兼ね備えたプレイヤー。<br />スタイルは「冷静な理論派ハンター」と評されます。<br />感情に流されることなく、盤面を整理し、一貫したロジックで人外（人狼陣営）を追い詰める！</p>
     // プレイヤー情報
-    const player = {
+    const [player, setPlayer] = useState({
         image_src: shintaro,
         profile: {
             handle_name: "しんたろー",
@@ -195,37 +209,41 @@ const PlayerProfileCard = () => {
         },
         stats: {
             Impact: 92,
-            Structure: 100,
+            Structure: 95,
             Insight: 91,
-            Logic: 47,
-            Originality: 67,
+            Logic: 98,
+            Originality: 87,
             Instinct: 86,
         }
-    }
-    return (<div>
+    });
 
-        <div style={{
-            display: "flex",
-            //alignItems: "center" // 垂直方向の中央揃え
-        }}>
-            <PlayerImage player={player} />
-
-            {/* 2. StatsBoard をラップする div にスタイルを追加 */}
+    return (
+        <div>
+            <nav>
+                <a href="./index.html">TOP</a>
+            </nav>
             <div style={{
-                alignSelf: "flex-start", // 引き伸ばしを防止（上端に寄せる）
-                marginTop: "auto",      // 上下のマージンを auto にすることで中央に配置
-                marginBottom: "auto"    // 上下のマージンを auto にすることで中央に配置
+                display: "flex",
+                //alignItems: "center" // 垂直方向の中央揃え
             }}>
-                <StatsScore stats={player.stats} />
-            </div>
+                <PlayerImage player={player} />
 
-            <RadarChart stats={player.stats} />
-        </div>
-        <div style={{ display: "flex" }}>
-            <BasicInformation player={player} />
-            <DetailInformation player={player} />
-        </div>
-    </div>)
+                {/* 2. StatsBoard をラップする div にスタイルを追加 */}
+                <div style={{
+                    alignSelf: "flex-start", // 引き伸ばしを防止（上端に寄せる）
+                    marginTop: "auto",      // 上下のマージンを auto にすることで中央に配置
+                    marginBottom: "auto"    // 上下のマージンを auto にすることで中央に配置
+                }}>
+                    <StatsScore player={player} onScoreTextChange={setPlayer} />
+                </div>
+
+                <RadarChart stats={player.stats} />
+            </div>
+            <div style={{ display: "flex" }}>
+                <BasicInformation player={player} />
+                <DetailInformation player={player} />
+            </div>
+        </div>)
 
 }
 // #endregion

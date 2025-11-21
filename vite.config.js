@@ -13,6 +13,7 @@ export default defineConfig({
         contact: './contact.html',
         home: './home.html',
         filterableproducttable: './filterableproducttable.html',
+        player_profile_card: './player_profile_card.html',
       }
     }
   }

@@ -5,35 +5,83 @@ import { createRoot } from "react-dom/client";
 import shintaro from "../../public/image/player_image_001.jpg"
 import moruten from "../../public/image/player_image_002.jpg"
 import './style.css'
-// #region PlayerImageコンポーネント
-// プレイヤー画像
-const PlayerImage = ({ player }) => {
 
+//　プレイヤーデータ
+const PLAYER = {
+    image_src: shintaro,
+    profile: {
+        handle_name: "しんたろー",
+        age: 27,
+        introduction: "<p>その爽やかな語り口と裏腹に鋭い情報分析力と論理的な厳格さを兼ね備えたプレイヤー。<br />スタイルは「冷静な理論派ハンター」と評されます。<br />感情に流されることなく、盤面を整理し、一貫したロジックで人外（人狼陣営）を追い詰める！</p>"
+    },
+    stats: {
+        Impact: 92,
+        Structure: 95,
+        Insight: 91,
+        Logic: 98,
+        Originality: 87,
+        Instinct: 86,
+    }
+}
+
+// スコア項目
+const SCORE_ITEM = ["議論力", "盤面整理力", "洞察力", "論理的思考能力", "オリジナル性", "直感力"];
+
+// 2分のルート3
+const MS_3_2 = Math.sqrt(3) / 2;
+
+// プレイヤー画像コンポーネント
+const PlayerImage = ({ player }) => {
     return (
         <>
             <div>
                 <p>{player.profile.handle_name}</p>
                 <img src={player.image_src} />
-
             </div>
         </>
     )
 }
-// #endregion
-const StatsBoard = () => {
 
-}
-const StatsScore = ({ player, onScoreTextChange }) => {
-    const handleChange = (e) => {
-
-        const newPlayer = { ...player };
-        const item = e.target.id;
-        newPlayer.stats[item] = e.target.value;
-        console.log('id: ', item)
-        onScoreTextChange(newPlayer)
-
-
+// スタッツボードコンポーネント
+const StatsBoard = ({ stats, onStatsChange }) => {
+    let total = 0;
+    for (let o in stats) {
+        total += Number(stats[o]);
     }
+    return (
+        <>
+            <div style={{ alignmentBaseline: "flex-start", marginTop: "auto", marginBottom: "auto" }}>
+                <StatsScore stats={stats} onScoreTextChange={onStatsChange} />
+            </div>
+            <div style={{ alignmentBaseline: "flex-start", }}>
+                <p>TOTAL:{total}</p>
+                <RadarChart stats={stats} />
+            </div>
+        </>
+    )
+}
+
+// スタッツスコアコンポーネント
+const StatsScore = ({ stats, onScoreTextChange }) => {
+    const scoreItem = ["議論力", "盤面整理力", "洞察力", "論理的思考能力", "オリジナル性", "直感力"]
+    const handleChange = (e) => {
+        const item = e.target.id;
+        const value = e.target.value;
+        const newStats = {
+            ...stats,
+            [item]: value,
+        }
+        onScoreTextChange(newStats);
+    }
+    const scoreRows = Object.keys(stats).map((key, id) => {
+        return (
+            <tr key={id}>
+                <th>{SCORE_ITEM[id]}</th>
+                <td><input id={key} type="number" value={stats[key]} onChange={handleChange} /></td>
+            </tr>
+
+        )
+    })
     return (
 
         <table>
@@ -41,52 +89,46 @@ const StatsScore = ({ player, onScoreTextChange }) => {
                 ※数値を変更できます
             </caption>
             <tbody>
-                <tr>
-                    <th>議論力</th>
-                    <td><input id="Impact" type="text" value={player.stats.Impact} onChange={handleChange} /></td>
-                </tr>
-                <tr>
-                    <th>盤面整理力</th>
-                    <td><input id="Structure" type="text" value={player.stats.Structure} onChange={handleChange} /></td>
-                </tr>
-                <tr>
-                    <th>洞察力</th>
-                    <td><input id="Insight" type="text" value={player.stats.Insight} onChange={handleChange} /></td>
-                </tr>
-                <tr>
-                    <th>論理的思考能力</th>
-                    <td><input id="Logic" type="text" value={player.stats.Logic} onChange={handleChange} /></td>
-                </tr>
-                <tr>
-                    <th>オリジナル性</th>
-                    <td><input id="Originality" type="text" value={player.stats.Originality} onChange={handleChange} /></td>
-                </tr>
-                <tr>
-                    <th>直感力</th>
-                    <td><input id="Instinct" type="text" value={player.stats.Instinct} onChange={handleChange} /></td>
-                </tr>
+                {scoreRows}
             </tbody>
         </table>
     )
 }
-// #region RadarChartコンポーネント
+// RadarChartコンポーネント
 const RadarChart = ({ stats }) => {
     const { Impact, Structure, Insight, Logic, Originality, Instinct } = stats;
 
-    // 各項目の頂点の座標を求める
-    const ImpactCoordinate = { x: 100, y: (100 - Impact) }; // 真上の頂点
-    const StructureCoordinate = { x: (100 + (Structure * (Math.sqrt(3) / 2))), y: 100 - (Structure / 2) } // 右上の頂点
-    const InsightCoordinate = { x: (100 + (Insight * (Math.sqrt(3) / 2))), y: 100 + (Insight / 2) } // 右下の頂点
-    const LogicCoordinate = { x: 100, y: (100 + Number(Logic)) }; // 真下の頂点
-    console.log("LogicCoordinate :", LogicCoordinate)
-    const OriginalityCoordinate = { x: (100 - (Originality * (Math.sqrt(3) / 2))), y: 100 + (Originality / 2) } // 左下の頂点
-    const InstinctCoordinate = { x: (100 - (Instinct * (Math.sqrt(3) / 2))), y: 100 - (Instinct / 2) } // 左上の頂点
+    const coordinate = []
+    // 各項目の頂点の座標を配列に追加
+    coordinate.push({ x: 100, y: (100 - Impact) }); // 真上の頂点
+    coordinate.push({ x: (100 + (Structure * (MS_3_2))), y: 100 - (Structure / 2) }) // 右上の頂点
+    coordinate.push({ x: (100 + (Insight * (MS_3_2))), y: 100 + (Insight / 2) }) // 右下の頂点
+    coordinate.push({ x: 100, y: (100 + Number(Logic)) }); // 真下の頂点
+    coordinate.push({ x: (100 - (Originality * (MS_3_2))), y: 100 + (Originality / 2) }) // 左下の頂点
+    coordinate.push({ x: (100 - (Instinct * (MS_3_2))), y: 100 - (Instinct / 2) })// 左上の頂点
 
-    // "M 100.0 20.0 L 186.6 50.0 L 160.6 135.0 L 100.0 170.0 L 39.4 135.0 L 13.4 50.0 L 100.0 20.0"
-    let radarPath = `M ${ImpactCoordinate['x']} ${ImpactCoordinate['y']} L ${StructureCoordinate['x']} ${StructureCoordinate['y']} L ${InsightCoordinate['x']} ${InsightCoordinate['y']} L ${InsightCoordinate['x']} ${InsightCoordinate['y']} `;
-    radarPath = radarPath + `L ${LogicCoordinate['x']} ${LogicCoordinate['y']} L ${OriginalityCoordinate['x']} ${OriginalityCoordinate['y']} L ${InstinctCoordinate['x']} ${InstinctCoordinate['y']} `;
-    radarPath = radarPath + `L ${ImpactCoordinate['x']} ${ImpactCoordinate['y']}`
-    console.log(radarPath)
+    // レーダーチャートのパスを作成
+    let rPath = ""
+    for (let i = 0; i < coordinate.length + 1; i++) {
+        if (i == 0) {
+            rPath += `M ${coordinate[i]['x']} ${coordinate[i]['y']} `
+
+        } else if (i < coordinate.length) {
+            rPath += `L ${coordinate[i]['x']} ${coordinate[i]['y']} `
+        } else if (coordinate.length == i) {
+            rPath += `L ${coordinate[0]['x']} ${coordinate[0]['y']}`
+        }
+    }
+
+    // レーダーチャートの頂点を描画
+    const circles = [];
+    coordinate.forEach((e, id) => {
+        circles.push(
+            <circle key={id} cx={e['x']} cy={e['y']} r="3" />
+        )
+    })
+    let j = 0;
+    console.log('circles', circles);
     return (
         /**class radar-chart-3にpadding 35px指定してある。 */
         <div className="radar-chart-3" >
@@ -111,55 +153,29 @@ const RadarChart = ({ stats }) => {
                     <path d="M 100.0 83.3 L 114.4 91.7 L 114.4 108.3 L 100.0 116.7 L 85.6 108.3 L 85.6 91.7 L 100.0 83.3" />
                 </g>
                 {/**レーダーチャート 本体　fill 塗りつぶし色　最後の２桁が透明度　stroke 枠線色 　（x, y）*/}
-                <path d={radarPath}
+                <path d={rPath}
                     fill="#1bd5ee4e"
                     stroke="#1bd5ee" />
 
                 {/**頂点 描画 */}
                 <g fill="#2589d0">
-                    <circle cx={ImpactCoordinate['x']} cy={ImpactCoordinate['y']} r="3" />
-                    <circle cx={StructureCoordinate['x']} cy={StructureCoordinate['y']} r="3" />
-                    <circle cx={InsightCoordinate['x']} cy={InsightCoordinate['y']} r="3" />
-                    <circle cx={LogicCoordinate['x']} cy={LogicCoordinate['y']} r="3" />
-                    <circle cx={OriginalityCoordinate['x']} cy={OriginalityCoordinate['y']} r="3" />
-                    <circle cx={InstinctCoordinate['x']} cy={InstinctCoordinate['y']} r="3" />
+                    {circles}
                 </g>
             </svg>
             <dl>
-
-                <div>
-                    <dt>議論力</dt>
-                    {/**  <dd>{Impact}</dd>*/}
-                </div>
-                <div>
-                    <dt>盤面整理力</dt>
-                    {/**<dd>{Structure}</dd>*/}
-                </div>
-                <div>
-                    <dt>洞察力</dt>
-                    {/**<dd>{Insight}</dd>*/}
-                </div>
-                <div>
-                    <dt>論理的思考能力</dt>
-                    {/**<dd>{Logic}</dd>*/}
-                </div>
-                <div>
-                    <dt>オリジナル性</dt>
-                    {/**<dd>{Originality}</dd>*/}
-                </div>
-                <div>
-                    <dt>直感力</dt>
-                    {/**<dd>{Instinct}</dd>*/}
-                </div>
+                {SCORE_ITEM.map((e, id) => {
+                    return (
+                        <div key={id}>
+                            <dt>{e}</dt>
+                        </div>
+                    )
+                })}
             </dl>
         </div>
-
     )
 }
-// #endregion
 
 
-// #region BasicInformationコンポーネント
 // 基本情報
 const BasicInformation = ({ player }) => {
 
@@ -178,78 +194,52 @@ const BasicInformation = ({ player }) => {
                         </tr>
                     </tbody>
                 </table>
-
             </div>
         </>
     )
 }
-// #endregion
 
-// #region DetailInformationコンポーネント
+// DetailInformationコンポーネント
 const DetailInformation = ({ player }) => {
     return (
-        <div>
-            {player.profile.introduction}
-        </div>
+        <div
+            dangerouslySetInnerHTML={{ __html: player.profile.introduction }}
+        />
     )
 }
-// #end
 
-// #region プレイヤーカードコンポーネント
-const PlayerProfileCard = () => {
-    // 詳細説明
-    const introduction = <p>その爽やかな語り口と裏腹に鋭い情報分析力と論理的な厳格さを兼ね備えたプレイヤー。<br />スタイルは「冷静な理論派ハンター」と評されます。<br />感情に流されることなく、盤面を整理し、一貫したロジックで人外（人狼陣営）を追い詰める！</p>
+// プレイヤーカードコンポーネント
+const PlayerProfileCard = ({ player }) => {
     // プレイヤー情報
-    const [player, setPlayer] = useState({
-        image_src: shintaro,
-        profile: {
-            handle_name: "しんたろー",
-            age: 99,
-            introduction: introduction
-        },
-        stats: {
-            Impact: 92,
-            Structure: 95,
-            Insight: 91,
-            Logic: 98,
-            Originality: 87,
-            Instinct: 86,
-        }
-    });
+    const [playerData, setPlayerData] = useState(player);
 
+    // statsを更新する関数
+    const handleStatsUpdate = (newStats) => {
+        setPlayerData(
+            {
+                ...playerData,
+                stats: newStats
+            }
+        );
+    }
     return (
-        <div>
+        <div style={{ padding: "10px" }}>
             <nav>
                 <a href="./index.html">TOP</a>
             </nav>
-            <div style={{
-                display: "flex",
-                //alignItems: "center" // 垂直方向の中央揃え
-            }}>
-                <PlayerImage player={player} />
-
-                {/* 2. StatsBoard をラップする div にスタイルを追加 */}
-                <div style={{
-                    alignSelf: "flex-start", // 引き伸ばしを防止（上端に寄せる）
-                    marginTop: "auto",      // 上下のマージンを auto にすることで中央に配置
-                    marginBottom: "auto"    // 上下のマージンを auto にすることで中央に配置
-                }}>
-                    <StatsScore player={player} onScoreTextChange={setPlayer} />
-                </div>
-
-                <RadarChart stats={player.stats} />
+            <div style={{ display: "flex", alignItems: "center" }}>
+                <PlayerImage player={playerData} />
+                <StatsBoard stats={playerData.stats} onStatsChange={handleStatsUpdate} />
             </div>
             <div style={{ display: "flex" }}>
-                <BasicInformation player={player} />
-                <DetailInformation player={player} />
+                <BasicInformation player={playerData} />
+                <DetailInformation player={playerData} />
             </div>
         </div>)
-
 }
-// #endregion
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <PlayerProfileCard />
+        <PlayerProfileCard player={PLAYER} />
     </StrictMode>
 );

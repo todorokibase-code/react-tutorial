@@ -132,7 +132,7 @@ const RadarChart = ({ stats }) => {
     return (
         /**class radar-chart-3にpadding 35px指定してある。 */
         <div className="radar-chart-3" >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" style={{ overflow: "visible" }}>
 
                 {/**中央から広がる直線 */}
                 <g stroke="#dce5eb">

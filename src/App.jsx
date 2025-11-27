@@ -13,8 +13,13 @@ function App() {
     <>
       <div>
         <nav>
-          <a href="./filterableproducttable.html">技術領域①　Reacの流儀</a><br />
-          <a href="./player_profile_card.html">技術領域①　Reacの流儀 オリジナルページ作成</a>
+          <ul>
+
+            <li><a href="./filterableproducttable.html">技術領域①　Reacの流儀</a></li>
+            <li><a href="./player_profile_card.html">技術領域①　Reacの流儀 オリジナルページ作成</a></li>
+            <li><a href="./about.html">About</a></li>
+          </ul>
+
         </nav>
       </div>
     </>

@@ -128,7 +128,6 @@ const RadarChart = ({ stats }) => {
         )
     })
     let j = 0;
-    console.log('circles', circles);
     return (
         /**class radar-chart-3にpadding 35px指定してある。 */
         <div className="radar-chart-3" >

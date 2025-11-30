@@ -18,6 +18,7 @@ function App() {
             <li><a href="./filterableproducttable.html">技術領域①　Reacの流儀</a></li>
             <li><a href="./player_profile_card.html">技術領域①　Reacの流儀 オリジナルページ作成</a></li>
             <li><a href="./about.html">About</a></li>
+            <li><a href="./tictactoe.html">Tic-Tac-Toe</a></li>
           </ul>
 
         </nav>

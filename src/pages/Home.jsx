@@ -1,3 +1,6 @@
+
+import { Link } from 'react-router-dom';
+
 export default function Home() {
   return (
     <div>
@@ -6,8 +9,9 @@ export default function Home() {
         <a href="./index.html">TOP</a> |{" "}
         <a href="./about.html">About</a> |{" "}
         <a href="./contact.html">Contact</a>
+
       </nav>
-      
+
     </div>
   );
 }

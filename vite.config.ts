@@ -1,21 +1,21 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/react-tutorial/',
+  base: "/react-tutorial/",
   build: {
     rollupOptions: {
       input: {
-        main: './index.html',
-        about: './about.html',
-        contact: './contact.html',
-        home: './home.html',
-        filterableproducttable: './filterableproducttable.html',
-        player_profile_card: './player_profile_card.html',
-      }
-    }
-  }
-
-})
+        main: "./index.html",
+        about: "./about.html",
+        contact: "./contact.html",
+        home: "./home.html",
+        filterableproducttable: "./filterableproducttable.html",
+        player_profile_card: "./player_profile_card.html",
+        tictactoe: "./tictactoe.html",
+      },
+    },
+  },
+});

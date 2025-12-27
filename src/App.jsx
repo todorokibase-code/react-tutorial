@@ -1,5 +1,6 @@
 import "./App.css";
 import FilterableProductTable from "./pages/FilterableProductTable";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 const PRODUCT = [
   { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
   { category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit" },
@@ -19,10 +20,12 @@ function App() {
             <li><a href="./player_profile_card.html">技術領域①　Reacの流儀 オリジナルページ作成</a></li>
             <li><a href="./about.html">About</a></li>
             <li><a href="./tictactoe.html">Tic-Tac-Toe</a></li>
+            <li><a href="./router.html">ルーター</a></li>
           </ul>
 
         </nav>
       </div>
+
     </>
   );
 }

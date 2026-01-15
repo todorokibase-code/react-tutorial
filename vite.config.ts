@@ -15,6 +15,7 @@ export default defineConfig({
         filterableproducttable: "./filterableproducttable.html",
         player_profile_card: "./player_profile_card.html",
         tictactoe: "./tictactoe.html",
+        router: "./router.html",
       },
     },
   },

@@ -21,8 +21,6 @@ function App() {
             <li><a href="./about.html">About</a></li>
             <li><a href="./tictactoe.html">Tic-Tac-Toe</a></li>
             <li><a href="./router.html">ルーター</a></li>
-            <li><a href="#">Git ブランチ間依存でコンフリクト発生テスト feature/Bで修正を追加しました</a></li>
-            <li><a href="#">Git ブランチ間依存でコンフリクト発生テスト 2回目</a></li>
           </ul>
 
         </nav>

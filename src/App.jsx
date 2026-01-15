@@ -23,6 +23,7 @@ function App() {
             <li><a href="./router.html">ルーター</a></li>
             <li><a href="#">Git ブランチ間依存でコンフリクト発生テスト feature/Bで修正を追加しました</a></li>
             <li><a href="#">Git feature/Dブランチで修正しました。</a></li>
+            <li><a href="#">Git feature/Dブランチで修正しました。２件目</a></li>
           </ul>
 
         </nav>
